@@ -1,8 +1,5 @@
 from datetime import datetime
-from typing import Any
-
 import env
-
 from sqlalchemy import create_engine, select, text, Result, DateTime
 from sqlalchemy.orm import scoped_session, sessionmaker, declarative_base, Session
 
@@ -20,6 +17,12 @@ def add_currencies(currencies: [Currency]):
         session.add_all(currencies)
         session.commit()
 
+def get_currencies() -> [Currency]:
+    with Session(db_engine) as session:
+        stmt = select(Currency)
+        result = session.scalars(stmt)
+        return list(result)
+
 def add_currency_values(currencies: [CurrencyValue]):
     with Session(db_engine) as session:
         session.add_all(currencies)
@@ -28,6 +31,11 @@ def add_currency_values(currencies: [CurrencyValue]):
 def get_currency_value_last_date() -> datetime:
     with Session(db_engine) as session:
         result = session.execute(text(f"SELECT MAX(date) FROM {CurrencyValue.__tablename__}"))
+        return result.one()[0]
+
+def get_currency_value_first_date() -> datetime:
+    with Session(db_engine) as session:
+        result = session.execute(text(f"SELECT MIN(date) FROM {CurrencyValue.__tablename__}"))
         return result.one()[0]
 
 def get_currency_values(date_start: datetime = None, date_end: datetime = None, currencies: list[str] = env.CURRENCIES_LIST):
@@ -50,3 +58,4 @@ def init_database():
 
 if __name__ == '__main__':
     init_database()
+

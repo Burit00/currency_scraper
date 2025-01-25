@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porównanie miesięczne walut</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+<body>
+<h1>Porównanie wartości walut w miesiącach kolejnych lat</h1>
+<a href="/">Przejdź do historycznego porównania</a>
+<form method="POST" action="/plot-monthly" class="form">
+    <div class="form-field">
+        <label for="base_currency">Wybierz walutę bazową:</label>
+        <select name="base_currency" id="base_currency" required>
+            <option value="">Wybierz walutę</option>
+            {% for currency in currencies %}
+            <option value="{{ currency.code }}">{{ currency.name }} ({{ currency.code }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-field">
+        <label for="currency_to_conversion">Wybierz walutę do przeliczenia:</label>
+        <select name="currency_to_conversion" id="currency_to_conversion" required>
+            <option value="">Wybierz walutę</option>
+            {% for currency in currencies %}
+            <option value="{{ currency.code }}">{{ currency.name }} ({{ currency.code }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-field">
+        <label for="years">Lata:</label>
+        <select name="years" id="years" multiple required>
+            {% for year in range(min_year, max_year + 1) %}
+                <option value="{{ year }}">{{ year }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-field">
+        <label for="month">Miesiąc:</label>
+        <select name="month" id="month">
+            <option value="1">Styczeń</option>
+            <option value="2">Luty</option>
+            <option value="3">Marzec</option>
+            <option value="4">Kwiecień</option>
+            <option value="5">Maj</option>
+            <option value="6">Czerwiec</option>
+            <option value="7">Lipiec</option>
+            <option value="8">Sierpiń</option>
+            <option value="9">Wrzesień</option>
+            <option value="10">Październik</option>
+            <option value="11">Listopad</option>
+            <option value="12">Grudzień</option>
+        </select>
+    </div>
+
+    <button type="submit">Wyświetl wykres</button>
+</form>
+</body>
+</html>

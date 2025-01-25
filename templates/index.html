@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia walut</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+</head>
+<body>
+<h1>Wyszukiwanie historycznych wartości walut</h1>
+<a href="/monthly">Przejdź do porównania miesięcznego</a>
+<form method="POST" action="/plot" class="form">
+    <div class="form-field">
+        <label for="base_currency">Wybierz walutę bazową:</label>
+        <select name="base_currency" id="base_currency" required>
+            <option value="">Wybierz walutę</option>
+            {% for currency in currencies %}
+            <option value="{{ currency.code }}">{{ currency.name }} ({{ currency.code }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-field">
+        <label for="currencies_to_conversion">Wybierz waluty do przeliczenia:</label>
+        <select name="currencies_to_conversion" id="currencies_to_conversion" multiple required>
+            {% for currency in currencies %}
+            <option value="{{ currency.code }}">{{ currency.name }} ({{ currency.code }})</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-field">
+        <label for="start_date">Data początkowa:</label>
+        <input type="date" id="start_date" name="start_date" value="{{ min_date }}" min="{{ min_date }}" max="{{ max_date }}">
+    </div>
+    <div class="form-field">
+        <label for="end_date">Data końcowa:</label>
+        <input type="date" id="end_date" name="end_date" value="{{ max_date }}" min="{{ min_date }}" max="{{ max_date }}">
+    </div>
+
+    <button type="submit">Wyświetl wykres</button>
+</form>
+</body>
+</html>
